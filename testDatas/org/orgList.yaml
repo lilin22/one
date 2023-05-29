@@ -1,0 +1,16 @@
+# 组织管理
+story: 组织管理
+title: 组长罗列所在组织
+info:
+  - step: 组长罗列所在组织
+    function: orgList
+    data:
+      request:
+        api: /user/v1/org/list
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]

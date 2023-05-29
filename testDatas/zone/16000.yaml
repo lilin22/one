@@ -1,0 +1,22 @@
+# 可用区管理
+story: 可用区管理
+title: 多用户添加可用区
+caseType: 冒烟测试
+caseLevel: 高
+status: 启用
+info:
+  - step: 多用户添加可用区
+    function: zoneAdd
+    data:
+      request:
+        api: /product/v1/zone-manager
+        method: POST
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+        data:
+          user_ids: [10245,10041]
+          zone_id: 152
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, 成功 ]

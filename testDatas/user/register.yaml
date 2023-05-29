@@ -1,0 +1,19 @@
+# 用户管理
+story: 普通用户
+title: 普通用户注册
+info:
+  - step: 用户注册
+    data:
+      request:
+        api: /user/v1/register
+        method: POST
+        headers:
+          Content-Type: application/json
+        data:
+          mobile: $mobile
+          password: $password
+          nickname: $nickname
+          message: $message
+      validate:
+            - eq : [$.code, 0]
+            - eq : [$.msg, OK]

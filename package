@@ -1,0 +1,9 @@
+pytest==7.2.2
+allure-pytest==2.13.0
+pymysql==0.10.0
+jsonpath==0.82
+pyyaml==6.0
+pytest-instafail==0.4.2
+requests==2.30.0
+pytest-repeat==0.9.1
+pycryptodomex==3.17

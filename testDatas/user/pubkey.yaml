@@ -1,0 +1,14 @@
+# 用户管理
+story: RSA加解密
+title: 请求公钥
+info:
+  - step: 请求公钥
+    data:
+      request:
+        api: /user/v1/pubkey
+        method: GET
+        headers:
+          Content-Type: application/x-www-form-urlencoded
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, 成功 ]

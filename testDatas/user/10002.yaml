@@ -1,0 +1,34 @@
+# 用户管理
+story: 普通用户
+title: 获取用户信息，并修改
+caseType: 冒烟测试
+caseLevel: 高
+status: 启用
+info:
+  - step: 获取用户信息
+    function: userInfo
+    data:
+      request:
+        api: /user/v1/user
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.data.user.mobile, $mobile ]
+        - eq: [ $.data.user.nickname, $nickname ]
+        - eq: [ $.data.user.status, enable ]
+  - step: 部分修改用户信息
+    function: userUpdate
+    data:
+      request:
+        api: /user/v1/user
+        method: PATCH
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+        data:
+          email: "1907936995@qq.com"
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]

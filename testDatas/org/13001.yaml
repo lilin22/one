@@ -1,0 +1,165 @@
+# 组织管理
+story: 组织管理
+title: 组长新增组织，罗列所在组织，获取组织详情，添加单一成员，罗列组织成员，剔除成员，修改组织，解散组织，组长罗列组织
+caseType: 冒烟测试
+caseLevel: 高
+status: 启用
+info:
+  - step: 组长新增组织
+    function: orgAdd
+    data:
+      request:
+        api: /user/v1/org/manage
+        method: POST
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+        data:
+          name: 测试组织
+          icon: https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202005%2F10%2F20200510010150_2zSAt.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1683100764&t=bdd25312bb04571ff29eb3a0306d947a
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+  - step: 罗列所在组织
+    function: orgList
+    data:
+      request:
+        api: /user/v1/org/list
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+        - eq: [ $.data.manage_orgs.*.manager.mobile, $mobile ]
+        - eq: [ $.data.manage_orgs.*.manager.nickname, $nickname ]
+  - step: 获取组织详情
+    function: orgDetails
+    data:
+      request:
+        api: /user/v1/org?id=
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+        - eq: [ $.data.org.name, 测试组织 ]
+  - step: 添加单一成员
+    function: orgMemberAdd
+    data:
+      request:
+        api: /user/v1/org/manage/member
+        method: POST
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+        data:
+          org_id: $id
+          mobiles:
+            - 18965816988
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+  - step: 罗列组织成员
+    function: orgMemberList
+    data:
+      request:
+        api: /user/v1/org/member/list?org_id=$org_id&status=enable
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+        - eq: [ '$.data.members[0].mobile', '18965816988' ]
+#        - eq: [ '$.data.members.*.mobile', '18965816988' ]
+  - step: 剔除成员
+    function: orgMemberDel
+    data:
+      request:
+        api: /user/v1/org/manage/member
+        method: DELETE
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+        data:
+          org_id: $id
+          mobiles:
+            - 18965816988
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+  - step: 修改组织信息
+    function: orgModify
+    data:
+      request:
+        api: /user/v1/org/manage
+        method: PATCH
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+        data:
+          id: $id
+          name: 测试组织2
+          icon: https://img0.baidu.com/it/u=3859881031,3292589111&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+  - step: 罗列所在组织
+    function: orgList
+    data:
+      request:
+        api: /user/v1/org/list
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+        - eq: [ $.data.manage_orgs.*.manager.mobile, $mobile ]
+        - eq: [ $.data.manage_orgs.*.manager.nickname, $nickname ]
+  - step: 获取组织详情
+    function: orgDetails
+    data:
+      request:
+        api: /user/v1/org?id=
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+        - eq: [ $.data.org.name, 测试组织2 ]
+  - step: 解散组织
+    function: orgDel
+    data:
+      request:
+        api: /user/v1/org/manage
+        method: DELETE
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+        data:
+          ids:
+            - $id
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+  - step: 组长解散组织后查看列表
+    function: orgDelGetList
+    data:
+      request:
+        api: /user/v1/org/list
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]

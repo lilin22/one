@@ -1,0 +1,7 @@
+*.log
+*.txt
+*.pyc
+.pytest_cache
+.idea
+.db
+.json

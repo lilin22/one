@@ -1,0 +1,135 @@
+# 组织管理
+story: 组织管理
+title: 组长新增组织，组长罗列所在组织，获取组织详情，添加成员，成员登录，成员退出组织，成员罗列所在组织，无成员时组长解散组织，组长罗列组织
+caseType: 冒烟测试
+caseLevel: 高
+status: 启用
+info:
+  - step: 组长新增组织
+    function: orgAdd
+    data:
+      request:
+        api: /user/v1/org/manage
+        method: POST
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+        data:
+          name: 测试组织
+          icon: https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202005%2F10%2F20200510010150_2zSAt.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1683100764&t=bdd25312bb04571ff29eb3a0306d947a
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+  - step: 罗列所在组织
+    function: orgList
+    data:
+      request:
+        api: /user/v1/org/list
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+        - eq: [ $.data.manage_orgs.*.manager.mobile, $mobile ]
+        - eq: [ $.data.manage_orgs.*.manager.nickname, $nickname ]
+  - step: 获取组织详情
+    function: orgDetails
+    data:
+      request:
+        api: /user/v1/org?id=
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+        - eq: [ $.data.org.name, 测试组织 ]
+  - step: 添加成员
+    function: orgMemberAdd
+    data:
+      request:
+        api: /user/v1/org/manage/member
+        method: POST
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+        data:
+          org_id: $id
+          mobiles:
+            - 18965816988
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+  - step: 普通用户登录
+    module: user
+    function: userLogin
+    data:
+      request:
+        api: /user/v1/login
+        method: POST
+        headers:
+          Content-Type: application/json
+        data:
+          mobile: '18965816988'
+          password: qa123456!
+          method: password
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+        - eq: [ $.data.nickname, lilin ]
+  - step: 用户自己退出组织
+    function: orgExit
+    data:
+      request:
+        api: /user/v1/org
+        method: DELETE
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+        data:
+          org_id: $id
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+  - step: 用户退出组织后查看列表
+    function: orgExitGetList
+    data:
+      request:
+        api: /user/v1/org/list
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+  - step: 没有成员时，解散组织
+    function: orgDel
+    data:
+      request:
+        api: /user/v1/org/manage
+        method: DELETE
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+        data:
+          ids:
+            - $id
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+  - step: 组长解散组织后查看列表
+    function: orgDelGetList
+    data:
+      request:
+        api: /user/v1/org/list
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]

@@ -1,0 +1,16 @@
+# 用户管理
+story: 普通用户
+title: 获取用户信息
+info:
+  - step: 获取用户信息
+    data:
+      request:
+        api: /user/v1/user
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+      validate:
+        - eq: [ $.data.user.mobile, $mobile ]
+        - eq: [ $.data.user.nickname, $nickname ]
+        - eq: [ $.data.user.status, enable ]

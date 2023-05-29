@@ -1,0 +1,18 @@
+# 组织管理
+story: 组织管理
+title: 组长罗列所在组织
+info:
+  - step: 解散组织
+    function: orgDel
+    data:
+      request:
+        api: /user/v1/org/manage
+        method: DELETE
+        headers:
+          Content-Type: application/json
+          Authorization: $token
+        data:
+          ids:
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]

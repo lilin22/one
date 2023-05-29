@@ -1,0 +1,22 @@
+{
+  "uid" : "83edc06c07f9ae9e47eb6dd1b683e4e2",
+  "name" : "packages",
+  "children" : [ {
+    "name" : "testCases.zone.test_zone",
+    "children" : [ {
+      "name" : "16000---多用户添加可用区",
+      "uid" : "16267379faddf151",
+      "parentUid" : "4a022b784a0ff6838b4a2aa7f652ad02",
+      "status" : "passed",
+      "time" : {
+        "start" : 1684813028966,
+        "stop" : 1684813029031,
+        "duration" : 65
+      },
+      "flaky" : false,
+      "newFailed" : false,
+      "parameters" : [ "'16000'", "[{'step': '多用户添加可用区', 'function': 'zoneAdd', 'data': {'request': {'api': '/product/v1/zone-manager', 'method': 'POST', 'headers': {'Content-Type': 'application/json', 'Authorization': '$token'}, 'data': {'user_ids': [10245, 10041], 'zone_id': 152}}, 'validate': [{'eq': ['$.code', 0]}, {'eq': ['$.msg', '成功']}]}}]", "'可用区管理'", "'多用户添加可用区'" ]
+    } ],
+    "uid" : "testCases.zone.test_zone"
+  } ]
+}

@@ -1,0 +1,11 @@
+[ {
+  "uid" : "16267379faddf151",
+  "name" : "16000---多用户添加可用区",
+  "time" : {
+    "start" : 1684813028966,
+    "stop" : 1684813029031,
+    "duration" : 65
+  },
+  "status" : "passed",
+  "severity" : "normal"
+} ]

@@ -1,0 +1,20 @@
+# 验证码
+story: 验证码
+title: 普通用户发验证码，注册
+info:
+  - step: 发送验证码
+    data:
+      request:
+        api: /user/v1/message
+        method: POST
+        headers:
+          Content-Type: application/json
+        data:
+          kind: mobile
+          destination: $mobile
+          scene: register
+          role: user
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, OK ]
+        - eq: [ $.data.expire, 300 ]

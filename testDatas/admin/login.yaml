@@ -1,0 +1,17 @@
+# 用户管理
+story: 管理员
+title: 管理员登录
+info:
+  - step: 管理员登录
+    data:
+      request:
+        api: /farmer/v1/admin/login
+        method: POST
+        headers:
+          Content-Type: application/json
+        data:
+          username: $username
+          password: $password
+      validate:
+        - eq: [ $.code, 0 ]
+        - eq: [ $.msg, 成功 ]
